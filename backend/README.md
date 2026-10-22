@@ -53,6 +53,24 @@ In order to ensure that the Laravel community is welcoming to all, please review
 
 If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
+## Local MySQL database
+
+The backend uses the XAMPP MariaDB/MySQL server by default. Start MySQL in the XAMPP Control Panel, create a database named `tms_db` in phpMyAdmin, and set `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, and `DB_PASSWORD` in the backend `.env` to match your local MySQL login. Run `php artisan migrate --seed` to create the schema and add the shared categories, brands, and units of measure. The master-data seeder is safe to run more than once. View application tables under the `tms_db` database in phpMyAdmin.
+
+User accounts are local to each developer: create an account by signing up with that developer's own Google account. Do not add personal Google identities, OAuth tokens, or passwords to seeders or Git.
+
+## Google Workspace sign-in
+
+Google account creation and login are separate: Create account only registers a new verified `@gmail.com` address, while Log in only accepts an existing account. Access is restricted on the server to verified Google accounts whose email ends in `@gmail.com`.
+
+Configure a Google OAuth web client and add this authorized redirect URI:
+
+```text
+http://localhost:8000/auth/google/callback
+```
+
+Set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` in the backend `.env`. Set `GOOGLE_REDIRECT_URI` to the same authorized redirect URI and `FRONTEND_URL` to the frontend origin (locally, `http://127.0.0.1:3000`). For deployment, use the deployed HTTPS origins. Never commit OAuth client secrets.
+
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

@@ -13,11 +13,11 @@ export function useApi() {
         ...options,
         headers: {
           Accept: 'application/json',
+          ...options.headers,
           ...(token.value ? { Authorization: `Bearer ${token.value}` } : {}),
         },
       })
     } catch (e: any) {
-      // Session expired: clear login and go to the login page
       if (e?.response?.status === 401 && path !== '/login') {
         token.value = null
         user.value = null

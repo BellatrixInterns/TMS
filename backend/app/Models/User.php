@@ -10,7 +10,10 @@ class User extends Authenticatable
     use HasApiTokens;
 
     protected $table = 'users';
+
     public $timestamps = false;
-    protected $fillable = ['username', 'password_hash', 'full_name'];
+
+    protected $fillable = ['username', 'password_hash', 'full_name', 'email', 'google_id'];
+
     protected $hidden = ['password_hash'];
 }

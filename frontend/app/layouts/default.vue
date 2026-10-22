@@ -21,59 +21,57 @@ async function logout() {
 
 <template>
   <div class="app">
-    <aside class="sidebar">
+    <header class="app-header">
       <NuxtLink to="/" class="brand">Trading Demo<span>Business App</span></NuxtLink>
-
-      <nav class="navlist">
-        <NuxtLink to="/" class="navlink" exact-active-class="active">
+      <nav class="module-nav" aria-label="Main navigation">
+        <NuxtLink to="/" class="module-nav-link" exact-active-class="active">
           <span class="icon">🏠</span><span>Home</span>
         </NuxtLink>
-
-        <div class="section">Modules</div>
         <NuxtLink
           v-for="m in allModules"
           :key="m.key"
           :to="m.path"
-          class="navlink"
-          :class="{ 'mod-active': current?.key === m.key }"
+          class="module-nav-link"
+          :class="{ active: current?.key === m.key }"
         >
           <span class="icon">{{ m.icon }}</span><span>{{ m.title }}</span>
         </NuxtLink>
+      </nav>
+      <div class="userbox">
+        👤 {{ user?.full_name }} &nbsp;|&nbsp;
+        <a href="#" @click.prevent="logout">Logout</a>
+      </div>
+    </header>
 
-        <template v-if="current">
+    <div class="workspace-layout">
+      <aside v-if="current" class="sidebar" :aria-label="`${current.title} pages`">
+        <nav class="subnav">
           <template v-for="g in current.groups" :key="g.title">
             <div class="section">{{ g.title }}</div>
             <NuxtLink
               v-for="l in g.links"
               :key="l.to"
               :to="l.to"
-              class="navlink sub"
+              class="subnav-link"
               active-class="active"
             >
               <span class="icon">{{ l.icon }}</span><span>{{ l.label }}</span>
             </NuxtLink>
             <div v-if="!g.links.length" class="empty-note">Nothing here yet</div>
           </template>
-        </template>
-      </nav>
+        </nav>
+        <div class="sidebar-footer">Laravel + Nuxt</div>
+      </aside>
 
-      <div class="sidebar-footer">Laravel + Nuxt</div>
-    </aside>
-
-    <div class="main">
-      <div class="topbar">
-        <div>
+      <main class="main">
+        <div class="page-heading">
           <h1>{{ route.meta.title }}</h1>
           <p>{{ route.meta.subtitle }}</p>
         </div>
-        <div class="userbox">
-          👤 {{ user?.full_name }} &nbsp;|&nbsp;
-          <a href="#" @click.prevent="logout">Logout</a>
+        <div class="content">
+          <slot />
         </div>
-      </div>
-      <div class="content">
-        <slot />
-      </div>
+      </main>
     </div>
   </div>
 </template>
